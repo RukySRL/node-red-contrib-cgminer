@@ -1,0 +1,86 @@
+<script type="text/javascript">
+	RED.nodes.registerType("cgminer", {
+		category: "function",
+		color: "#87A980",
+		defaults: {
+			name: { value: "CGMiner" },
+			ip: { value: "127.0.0.1" },
+			port: { value: "4028" },
+			timeout: { value: "5000" },
+		},
+		inputs: 1,
+		outputs: 1,
+		icon: "hash.png",
+		label: function () {
+			return this.name || "CGMiner";
+		},
+	});
+</script>
+
+<script type="text/x-red" data-template-name="cgminer">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i>Name</label>
+		<input type="text" id="node-input-name" placeholder="CGMiner">
+	</div>
+	<div class="form-row">
+		<h4>CGMiner Host Address</h4>
+		<label for="node-input-ip"><i class="icon-tag"></i>IP or Web Address</label>
+		<input type="text" id="node-input-ip" placeholder="127.0.0.1">
+	</div>
+	<div class="form-row">
+		<label for="node-input-port"><i class="icon-tag"></i>Port</label>
+		<input type="text" id="node-input-port" placeholder="4028">
+	</div>
+	<div class="form-row">
+		<h4>Timeout</h4>
+		<label for="node-input-timeout"><i class="icon-tag"></i>Timeout (in ms)</label>
+		<input type="text" id="node-input-timeout" placeholder="5000">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="cgminer">
+	<p>Retrieves data from CGMiner</p>
+	<h3>Inputs</h3>
+	    <dl class="message-properties">
+	        <dt class="optional">ip<span class="property-type">string</span></dt>
+	        <dd> The ip or web address where the command will be sent</dd>
+	    </dl>
+	    <dl class="message-properties">
+	        <dt class="optional">port<span class="property-type">string</span></dt>
+	        <dd> The port on the ip where the command will be sent</dd>
+	    </dl>
+	    <dl class="message-properties">
+	        <dt class="optional">timeout<span class="property-type">string</span></dt>
+	        <dd> The maximum time (in ms) that the receiver can take to respond</dd>
+	    </dl>
+	    <dl class="message-properties">
+	        <dt class="optional">command<span class="property-type">string | object</span></dt>
+	        <dd> The command to send to CGMiner (see the
+			     <a href="https://github.com/ckolivas/cgminer/blob/master/API-README">CGMiner API documentation</a>
+				 for commands that can be sent). It may be a simple string, such as
+				 <code>summary</code>, or may be an object - either a JSON string or a javascript object - containing
+				 the command and any paremeters, for example:
+				 <code>{&quot;command&quot;:&quot;hotplug&quot;,&quot;parameter&quot;:&quot;0&quot;}</code>.</dd>
+	    </dl>
+	 <h3>Output</h3>
+	    <dl class="message-properties">
+	        <dt>payload <span class="property-type">object | string</span></dt>
+	        <dd> the complete javascript object returned by CGMiner, or, if the data can't be parsed
+			     into an object, the string data returned</dd>
+	    </dl>
+	<h3>Details</h3>
+	    <p>When triggered, this node will retrieve data from a running CGMiner instance.
+	        The CGMiner API must be enabled and properly configured, as set forth in the
+	        CGMiner <a href="https://github.com/ckolivas/cgminer/blob/master/API-README">documentation</a>.</p>
+	    <p><code>msg.payload</code> is returned upon a successful API status request
+	        and contains the complete, parsed object data from CGMiner; however, if CGMiner can't parse the
+		    returned data as valid json, the actual string data returned will be sent instead.</p>
+	    <p>The <code>timeout</code> option is optional. If given, it represents a period of time, in milliseconds,
+			after which the api request to cgminer will give up. If the request times out, the data returned will
+			be empty.</p>
+	<h3>References</h3>
+	    <ul>
+	        <li><a href="https://github.com/ckolivas/cgminer">CGMiner</a> - the CGMiner project</li>
+	        <li><a href="https://github.com/tcorzo/node-red-contrib-cgminer">GitHub</a> - repository for this node</li>
+	    </ul>
+</script>
